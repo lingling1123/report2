@@ -60,43 +60,7 @@ relationships between each variable.
 
 ``` r
 # summary for monday
-summary(date)
-```
-
-    ##     instant             dteday         season            yr        
-    ##  Min.   :   48   2011-01-10:  24   Min.   :1.000   Min.   :0.0000  
-    ##  1st Qu.: 4328   2011-01-17:  24   1st Qu.:2.000   1st Qu.:0.0000  
-    ##  Median : 8674   2011-01-31:  24   Median :2.000   Median :1.0000  
-    ##  Mean   : 8646   2011-02-07:  24   Mean   :2.489   Mean   :0.5018  
-    ##  3rd Qu.:13032   2011-02-14:  24   3rd Qu.:3.000   3rd Qu.:1.0000  
-    ##  Max.   :17379   2011-02-21:  24   Max.   :4.000   Max.   :1.0000  
-    ##                  (Other)   :2335                                   
-    ##       mnth              hr           holiday         weekday    workingday   
-    ##  Min.   : 1.000   Min.   : 0.00   Min.   :0.000   Min.   :1   Min.   :0.000  
-    ##  1st Qu.: 4.000   1st Qu.: 6.00   1st Qu.:0.000   1st Qu.:1   1st Qu.:1.000  
-    ##  Median : 7.000   Median :12.00   Median :0.000   Median :1   Median :1.000  
-    ##  Mean   : 6.479   Mean   :11.56   Mean   :0.144   Mean   :1   Mean   :0.856  
-    ##  3rd Qu.:10.000   3rd Qu.:18.00   3rd Qu.:0.000   3rd Qu.:1   3rd Qu.:1.000  
-    ##  Max.   :12.000   Max.   :23.00   Max.   :1.000   Max.   :1   Max.   :1.000  
-    ##                                                                              
-    ##    weathersit         temp           atemp             hum        
-    ##  Min.   :1.000   Min.   :0.020   Min.   :0.0303   Min.   :0.1500  
-    ##  1st Qu.:1.000   1st Qu.:0.340   1st Qu.:0.3333   1st Qu.:0.4900  
-    ##  Median :1.000   Median :0.520   Median :0.5000   Median :0.6400  
-    ##  Mean   :1.431   Mean   :0.495   Mean   :0.4759   Mean   :0.6357  
-    ##  3rd Qu.:2.000   3rd Qu.:0.660   3rd Qu.:0.6212   3rd Qu.:0.7800  
-    ##  Max.   :4.000   Max.   :0.920   Max.   :0.8485   Max.   :1.0000  
-    ##                                                                   
-    ##    windspeed           cnt       
-    ##  Min.   :0.0000   Min.   :  1.0  
-    ##  1st Qu.:0.1045   1st Qu.: 37.0  
-    ##  Median :0.1642   Median :139.0  
-    ##  Mean   :0.1889   Mean   :183.7  
-    ##  3rd Qu.:0.2537   3rd Qu.:268.0  
-    ##  Max.   :0.7164   Max.   :968.0  
-    ## 
-
-``` r
+#summary(date)
 # density plot
 date %>%keep(is.numeric) %>%pivot_longer(everything()) %>%ggplot(aes(x = value)) +facet_wrap(~ name, scales = "free")+
 geom_density()
@@ -107,8 +71,8 @@ geom_density()
 ``` r
 # all predictors' correlation with cnt variable
 correlation <- cor(select(date,season,yr,mnth,holiday,workingday,weathersit,temp,atemp,hum,windspeed,cnt))
-corrplot(correlation, type = "upper", tl.pos = "lt",use="pairwise.complete.obs")
-corrplot(correlation, type = "lower", method = "number", add = TRUE, tl.pos = "n",use="pairwise.complete.obs")
+corrplot(correlation, type = "upper", tl.pos = "lt",na.label = "NA")
+corrplot(correlation, type = "lower", method = "number", add = TRUE, tl.pos = "n",na.label = "NA")
 ```
 
 ![](Project2_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->

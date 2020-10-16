@@ -1,6 +1,6 @@
 ---
-title: "automate"
-output: rmarkdown::github_document
+title: "automating"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -8,11 +8,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+
+
 Automate to work with any chosen day of week data.
 ```{r,warning=FALSE}
-library(tidyverse)
-library(rmarkdown)
-library(caret)
 weekday<-unique(data$weekday)
 output_file<-paste0(weekday,'.md')
 params<-lapply(weekday, FUN = function(x){list(weekday = x)})
