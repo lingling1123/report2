@@ -1,39 +1,48 @@
 ---
 title: "Project2"
-author: 'Lin Li'
-output: 
+author: "Lin Li"
+output: rmarkdown::github_document
 params:
   weekday: 1
 ---
 # Introduction
-```{r}
-library(dplyr)
+For this project, I will use bike sharing data to do analysis. There are 15 variables :  
+-instant(record index)  
+-dteday(date)  
+-season(1:winter, 2:spring, 3:summer, 4:fall)  
+-yr(0: 2011, 1:2012)  
+-mnth(month: 1 to 12)  
+-hr(hour:0 to 23)  
+-holiday(weather day is holiday or not)  
+-weekday(day of week)  
+-workingday(1 for neither weekend nor holiday,0 otherwise)  
+-weathersit(1: Clear, Few clouds, Partly cloudy, Partly cloudy,2: Mist and Cloudy, Mist andBroken clouds, Mist and Few clouds, Mist,3: Light Snow, Light Rain and Thunderstorm and Scattered clouds, Light Rain and Scattered clouds,4: Heavy Rain and Ice Pallets and Thunderstorm and Mist, Snow and Fog )  
+-temp(Normalized temperature in Celsius)  
+-atemp( Normalized feeling temperature in Celsius)  
+-hum(Normalized humidity),windspeed(Normalized wind speed)  
+-cnt(count of total rental bikes including both casual and registered ) 
+
+The purpose of this analysis is to create models for predicting cnt variable using others predictors mentioned above. Two models are created:classification tree model using leave one out cross validation, boosted tree model using cross validation.
+
+
+
+
+```{r,warning=FALSE,include=FALSE}
+# library used 
+library(tidyverse)
 library(caret)
-library(ggplot2)
 library(rmarkdown)
+library(corrplot)
+library(knitr)
 ```
-
-```{r,eval=FALSE,echo=FALSE,include=TRUE}
-day<-unique(data$weekday)
-output_file<-paste0(day,'.md')
-params = lapply(day, FUN = function(x){list(weekday = x)})
-reports<-tibble(output_file,params)
-apply(reports, MARGIN = 1, FUN = function(x){
-                render(input = 'Project2.Rmd', output_file = x[[1]], params = x[[2]])
-                })
-
-```
-
-
 
 
 # Data
 ```{r}
 # relative path to read data
-getwd()
+#getwd()
 day<-read.csv('day.csv')
 day<-day%>%select(-c('casual','registered'))
-day
 hour<-read.csv('hour.csv')
 hour<-hour%>%select(-c('casual','registered'))
 # combine two data and get a new one
@@ -50,57 +59,45 @@ testday<-date[-index,]
 
 
 # Summarization
-```{r}
-# weather
-g1<-ggplot(data=trainday,aes(x=factor(weathersit)))+geom_bar()+labs(x='Weather',title='Count for weather')+scale_x_discrete(labels=c('Clear/Cloud','Cloud+Mist','Light rain/snow','Heavy rain..'))
-g1
-# feeling temp
-g2<-ggplot(data=trainday,aes(x=atemp,y=cnt))+geom_point()+labs(x='Normalized feeling temperature',title='Count for atemp')
-g2
-# humidity
-g3<-ggplot(data=trainday,aes(x=hum,y=cnt))+geom_point()+labs(x='Normalized humidity',title='Count for hum')
-g3
-# windspeed
-g4<-ggplot(data=trainday,aes(x=windspeed,y=cnt))+geom_point()+labs(x='Normalized wind speed',title='Count for hum')
-g4
-# month
-g5<-ggplot(data=trainday,aes(x=factor(mnth)))+geom_bar()+labs(x='Month',title='Count for month')+scale_x_discrete(labels=c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'))
-g5
-# season
-g6<-ggplot(data=trainday,aes(x=factor(season)))+geom_bar()+labs(x='Season',title='Count for month')+scale_x_discrete(labels=c('winter','spring','summer','fall'))
-g6
+
+In this section, I summarize information for Monday, draw density plots for all variables, and plot a correlation plot for cnt with others predictors.  From density plots, I can conclude the distributions for variables. From correlation plot, I can conclude correlation relationships between each variable.
+
+```{r,warning=FALSE}
+# summary for monday
+summary(date)
+# density plot
+date %>%keep(is.numeric) %>%pivot_longer(everything()) %>%ggplot(aes(x = value)) +facet_wrap(~ name, scales = "free")+
+geom_density()
+# all predictors' correlation with cnt variable
+correlation <- cor(select(date,season,yr,mnth,holiday,workingday,weathersit,temp,atemp,hum,windspeed,cnt))
+corrplot(correlation, type = "upper", tl.pos = "lt",use="pairwise.complete.obs")
+corrplot(correlation, type = "lower", method = "number", add = TRUE, tl.pos = "n",use="pairwise.complete.obs")
 ```
 
 
 # Modeling
 
-  In this section, I fitted two models. First is classification tree model using leave one out cross validation. Second is boosted tree model using corss-validation.  For both models, I center and scale the quantitative data before modeling.
+Two models are created for predicting cnt of Monday: First is classification model using leave one out cross validation. Second is boosted tree model with cross validation. I read in data and split into training and test.Then centered and scaled data, and fitted models using methods mentioned.  
+Through comparing RMSE for test dataset, choose the one with smaller RMSE as final model.
 
-
-
-```{r}
+```{r,warning=FALSE}
+# fit model 
 classification.fit<-train(cnt~season+mnth+hr+holiday+workingday+weathersit+temp+atemp+hum+windspeed,trainday,method='rpart',preProcess = c('center','scale'),trControl=trainControl(method='LOOCV'))
-classification.fit$bestTune
-classification.fit$results
+classification.fit
 boosted.fit<-train(cnt~season+yr+mnth+hr+holiday+workingday+weathersit+temp+atemp+hum+windspeed,trainday,method='gbm',preProcess = c('center','scale'),trControl=trainControl(method='repeatedcv'), verbose = FALSE)
-boosted.fit$bestTune
-boosted.fit$results
-pred<-round(predict(classification.fit,newdata=testday))
-tree.tbl<-table(data.frame(pred=pred,true=testday$cnt))
-missclassfication1<-1-sum(diag(tree.tbl))/sum(tree.tbl)
-missclassfication1
-pred2<-round(predict(boosted.fit,newdata=testday))
-boosted.tbl<-table(data.frame(pred=pred2,true=testday$cnt))
-missclassfication2<-1-sum(diag(boosted.tbl))/sum(boosted.tbl)
-missclassfication2
+boosted.fit
+# predict
+class<-predict(classification.fit,newdata = testday)
+classRMSE<-sqrt(mean((class-testday$cnt)^2))
+boost<-predict(boosted.fit,newdata = testday)
+boostRMSE<-sqrt(mean((boost-testday$cnt)^2))
+#RMSE for classification model and boost model
+x<-c(classification=classRMSE,boost=boostRMSE)
+knitr::kable(x,col.names =' RMSE')
 ```
 
-```{r,eval=FALSE,echo=FALSE,include=TRUE}
-weekday<-unique(data$weekday)
-output_file<-paste0(weekday,'.html')
-params<-lapply(weekday, FUN = function(x){list(weekday = x)})
-params
-reports<-tibble(output_file,params)
-reports
-apply(reports, MARGIN = 1, FUN = function(x){render(input = 'Project2.Rmd', output_file = x[[1]], params = x[[2]])})
-```
+
+
+
+
+

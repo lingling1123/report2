@@ -63,29 +63,37 @@ relationships between each variable.
 summary(date)
 ```
 
-    ##     instant             dteday         season            yr              mnth              hr           holiday 
-    ##  Min.   :    1   2011-01-01:  24   Min.   :1.000   Min.   :0.0000   Min.   : 1.000   Min.   : 0.00   Min.   :0  
-    ##  1st Qu.: 4281   2011-01-08:  24   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 4.000   1st Qu.: 5.75   1st Qu.:0  
-    ##  Median : 8638   2011-01-15:  24   Median :2.000   Median :0.0000   Median : 7.000   Median :11.00   Median :0  
-    ##  Mean   : 8652   2011-02-05:  24   Mean   :2.476   Mean   :0.4968   Mean   : 6.553   Mean   :11.48   Mean   :0  
-    ##  3rd Qu.:12999   2011-02-12:  24   3rd Qu.:3.000   3rd Qu.:1.0000   3rd Qu.:10.000   3rd Qu.:17.00   3rd Qu.:0  
-    ##  Max.   :17331   2011-02-19:  24   Max.   :4.000   Max.   :1.0000   Max.   :12.000   Max.   :23.00   Max.   :0  
-    ##                  (Other)   :2368                                                                                
-    ##     weekday    workingday   weathersit         temp            atemp             hum           windspeed     
-    ##  Min.   :6   Min.   :0    Min.   :1.000   Min.   :0.0200   Min.   :0.0000   Min.   :0.1200   Min.   :0.0000  
-    ##  1st Qu.:6   1st Qu.:0    1st Qu.:1.000   1st Qu.:0.3200   1st Qu.:0.3030   1st Qu.:0.4500   1st Qu.:0.1045  
-    ##  Median :6   Median :0    Median :1.000   Median :0.4600   Median :0.4545   Median :0.6200   Median :0.1940  
-    ##  Mean   :6   Mean   :0    Mean   :1.409   Mean   :0.4818   Mean   :0.4619   Mean   :0.6191   Mean   :0.1962  
-    ##  3rd Qu.:6   3rd Qu.:0    3rd Qu.:2.000   3rd Qu.:0.6400   3rd Qu.:0.6212   3rd Qu.:0.7900   3rd Qu.:0.2836  
-    ##  Max.   :6   Max.   :0    Max.   :4.000   Max.   :1.0000   Max.   :0.8939   Max.   :1.0000   Max.   :0.8358  
-    ##                                                                                                              
-    ##       cnt       
-    ##  Min.   :  1.0  
-    ##  1st Qu.: 42.0  
-    ##  Median :129.0  
-    ##  Mean   :190.2  
-    ##  3rd Qu.:300.0  
-    ##  Max.   :783.0  
+    ##     instant             dteday         season            yr        
+    ##  Min.   :   48   2011-01-10:  24   Min.   :1.000   Min.   :0.0000  
+    ##  1st Qu.: 4328   2011-01-17:  24   1st Qu.:2.000   1st Qu.:0.0000  
+    ##  Median : 8674   2011-01-31:  24   Median :2.000   Median :1.0000  
+    ##  Mean   : 8646   2011-02-07:  24   Mean   :2.489   Mean   :0.5018  
+    ##  3rd Qu.:13032   2011-02-14:  24   3rd Qu.:3.000   3rd Qu.:1.0000  
+    ##  Max.   :17379   2011-02-21:  24   Max.   :4.000   Max.   :1.0000  
+    ##                  (Other)   :2335                                   
+    ##       mnth              hr           holiday         weekday    workingday   
+    ##  Min.   : 1.000   Min.   : 0.00   Min.   :0.000   Min.   :1   Min.   :0.000  
+    ##  1st Qu.: 4.000   1st Qu.: 6.00   1st Qu.:0.000   1st Qu.:1   1st Qu.:1.000  
+    ##  Median : 7.000   Median :12.00   Median :0.000   Median :1   Median :1.000  
+    ##  Mean   : 6.479   Mean   :11.56   Mean   :0.144   Mean   :1   Mean   :0.856  
+    ##  3rd Qu.:10.000   3rd Qu.:18.00   3rd Qu.:0.000   3rd Qu.:1   3rd Qu.:1.000  
+    ##  Max.   :12.000   Max.   :23.00   Max.   :1.000   Max.   :1   Max.   :1.000  
+    ##                                                                              
+    ##    weathersit         temp           atemp             hum        
+    ##  Min.   :1.000   Min.   :0.020   Min.   :0.0303   Min.   :0.1500  
+    ##  1st Qu.:1.000   1st Qu.:0.340   1st Qu.:0.3333   1st Qu.:0.4900  
+    ##  Median :1.000   Median :0.520   Median :0.5000   Median :0.6400  
+    ##  Mean   :1.431   Mean   :0.495   Mean   :0.4759   Mean   :0.6357  
+    ##  3rd Qu.:2.000   3rd Qu.:0.660   3rd Qu.:0.6212   3rd Qu.:0.7800  
+    ##  Max.   :4.000   Max.   :0.920   Max.   :0.8485   Max.   :1.0000  
+    ##                                                                   
+    ##    windspeed           cnt       
+    ##  Min.   :0.0000   Min.   :  1.0  
+    ##  1st Qu.:0.1045   1st Qu.: 37.0  
+    ##  Median :0.1642   Median :139.0  
+    ##  Mean   :0.1889   Mean   :183.7  
+    ##  3rd Qu.:0.2537   3rd Qu.:268.0  
+    ##  Max.   :0.7164   Max.   :968.0  
     ## 
 
 ``` r
@@ -94,7 +102,7 @@ date %>%keep(is.numeric) %>%pivot_longer(everything()) %>%ggplot(aes(x = value))
 geom_density()
 ```
 
-![](6_files/figure-gfm/unnamed-chunk-78-1.png)<!-- -->
+![](Project2_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 # all predictors' correlation with cnt variable
@@ -103,7 +111,7 @@ corrplot(correlation, type = "upper", tl.pos = "lt",use="pairwise.complete.obs")
 corrplot(correlation, type = "lower", method = "number", add = TRUE, tl.pos = "n",use="pairwise.complete.obs")
 ```
 
-![](6_files/figure-gfm/unnamed-chunk-78-2.png)<!-- -->
+![](Project2_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 # Modeling
 
@@ -123,21 +131,21 @@ classification.fit
 
     ## CART 
     ## 
-    ## 1761 samples
+    ## 1737 samples
     ##   10 predictor
     ## 
     ## Pre-processing: centered (10), scaled (10) 
     ## Resampling: Leave-One-Out Cross-Validation 
-    ## Summary of sample sizes: 1760, 1760, 1760, 1760, 1760, 1760, ... 
+    ## Summary of sample sizes: 1736, 1736, 1736, 1736, 1736, 1736, ... 
     ## Resampling results across tuning parameters:
     ## 
-    ##   cp          RMSE      Rsquared      MAE      
-    ##   0.08562866  125.5369  0.5236155324   93.60365
-    ##   0.18826086  157.7179  0.2691247310  123.21705
-    ##   0.37971143  188.5446  0.0006076186  170.41135
+    ##   cp          RMSE      Rsquared     MAE      
+    ##   0.07061600  135.9746  0.437134898   92.81922
+    ##   0.09536109  162.8587  0.210934169  116.71212
+    ##   0.30268930  184.2910  0.002407888  157.84868
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
-    ## The final value used for the model was cp = 0.08562866.
+    ## The final value used for the model was cp = 0.070616.
 
 ``` r
 boosted.fit<-train(cnt~season+yr+mnth+hr+holiday+workingday+weathersit+temp+atemp+hum+windspeed,trainday,method='gbm',preProcess = c('center','scale'),trControl=trainControl(method='repeatedcv'), verbose = FALSE)
@@ -146,31 +154,31 @@ boosted.fit
 
     ## Stochastic Gradient Boosting 
     ## 
-    ## 1761 samples
+    ## 1737 samples
     ##   11 predictor
     ## 
     ## Pre-processing: centered (11), scaled (11) 
     ## Resampling: Cross-Validated (10 fold, repeated 1 times) 
-    ## Summary of sample sizes: 1585, 1585, 1585, 1586, 1585, 1585, ... 
+    ## Summary of sample sizes: 1564, 1564, 1563, 1564, 1562, 1563, ... 
     ## Resampling results across tuning parameters:
     ## 
     ##   interaction.depth  n.trees  RMSE       Rsquared   MAE     
-    ##   1                   50      100.65956  0.7411825  74.29845
-    ##   1                  100       85.66792  0.7909799  64.40788
-    ##   1                  150       80.33715  0.8092106  61.18622
-    ##   2                   50       71.82335  0.8578732  51.93671
-    ##   2                  100       60.26575  0.8937397  44.68017
-    ##   2                  150       55.68264  0.9068205  41.61043
-    ##   3                   50       58.44258  0.9024838  42.70580
-    ##   3                  100       48.62483  0.9288091  35.01671
-    ##   3                  150       45.62102  0.9366739  32.46237
+    ##   1                   50      123.74676  0.5954013  84.72126
+    ##   1                  100      108.57963  0.6660254  73.95147
+    ##   1                  150      101.63609  0.7018441  69.63850
+    ##   2                   50       95.10661  0.7455254  61.99808
+    ##   2                  100       77.55411  0.8223903  52.03341
+    ##   2                  150       73.53247  0.8370219  49.44259
+    ##   3                   50       76.71687  0.8338113  50.40060
+    ##   3                  100       62.46380  0.8818366  41.23709
+    ##   3                  150       57.97259  0.8967217  38.18653
     ## 
     ## Tuning parameter 'shrinkage' was held constant at a value of 0.1
-    ## Tuning parameter 'n.minobsinnode' was held
-    ##  constant at a value of 10
+    ## 
+    ## Tuning parameter 'n.minobsinnode' was held constant at a value of 10
     ## RMSE was used to select the optimal model using the smallest value.
-    ## The final values used for the model were n.trees = 150, interaction.depth = 3, shrinkage = 0.1 and n.minobsinnode
-    ##  = 10.
+    ## The final values used for the model were n.trees = 150, interaction.depth =
+    ##  3, shrinkage = 0.1 and n.minobsinnode = 10.
 
 ``` r
 # predict
@@ -185,5 +193,5 @@ knitr::kable(x,col.names =' RMSE')
 
 |                |      RMSE |
 | :------------- | --------: |
-| classification | 119.21661 |
-| boost          |  42.85878 |
+| classification | 128.27671 |
+| boost          |  56.87252 |
