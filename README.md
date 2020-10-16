@@ -1,6 +1,6 @@
 # report2
 
-In this report, I use [bike share dataset](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset) to fit two models, and predict cnt variables for any choosen weekday.
+In this report, I use [bike share dataset](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset) to fit two models, and predict **cnt** variables for any choosen weekday.
 First model is classification tree model using leave one out cross validation. Second model is boosted tree model with cross validation. 
 
 
