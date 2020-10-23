@@ -97,6 +97,23 @@ knitr::kable(x,col.names =' RMSE')
 ```
 
 
+# Fit linear model
+```{r}
+# Fit
+lm.fit <- train(cnt~season+mnth+hr+holiday+workingday+weathersit+temp+atemp+hum+windspeed, data = trainday, 
+         method = "lm", 
+         preProcess = c("center", "scale"),
+         trControl = trainControl(method = "cv", number = 10))
+
+# Predict
+lm.class <-predict(lm.fit,newdata = testday)
+lm.classRMSE<-sqrt(mean((lm.class-testday$cnt)^2))
+#RMSE for classification model and boost model
+x<-c(x,linear=lm.classRMSE)
+knitr::kable(x,col.names =' RMSE')
+```
+
+
 
 
 
